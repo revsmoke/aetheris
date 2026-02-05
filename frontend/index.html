@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aetheris | Environmental Design Intelligence</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <div id="app">
+        <canvas id="view3d"></canvas>
+        <div id="ui-overlay">
+            <header class="glass">
+                <h1>Aetheris</h1>
+            </header>
+            <main id="dashboard" class="glass">
+                <section id="location-info">
+                    <h2>Site Explorer</h2>
+                    <input type="text" id="site-search" placeholder="Enter site address...">
+                </section>
+                <section id="metrics">
+                    <div class="metric-card glass">
+                        <h3>Solar Potential</h3>
+                        <p id="solar-value">-- kWh</p>
+                    </div>
+                    <div class="metric-card glass">
+                        <h3>Air Quality</h3>
+                        <p id="aqi-value">-- AQI</p>
+                    </div>
+                </section>
+                <section id="simulation" class="metric-card glass">
+                    <h3>Time of Day</h3>
+                    <input type="range" id="time-slider" min="0" max="24" step="0.1" value="12">
+                    <p id="time-display">12:00 PM</p>
+                </section>
+                <button id="place-volume" class="glass-btn secondary">Place Design Volume</button>
+                <button id="generate-report" class="glass-btn">Generate AIAI Report</button>
+            </main>
+        </div>
+
+        <div id="report-modal" class="modal hidden">
+            <div class="modal-content glass">
+                <header>
+                    <h2>AIAI Design Suggestion</h2>
+                    <button id="close-modal">&times;</button>
+                </header>
+                <div id="report-text"></div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
