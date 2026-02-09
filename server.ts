@@ -13,11 +13,11 @@ app.use("*", async (c, next) => {
     c.header("Access-Control-Allow-Origin", "*");
     c.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     c.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    
+
     if (c.req.method === "OPTIONS") {
-        return c.text("", 204);
+        return new Response(null, { status: 204 });
     }
-    
+
     await next();
 });
 
@@ -28,21 +28,21 @@ app.get("/api/solar/*", async (c) => {
         if (!apiKey) {
             return c.json({ error: "API key not configured" }, 500);
         }
-        
+
         const path = c.req.path.replace("/api/solar/", "");
         const url = new URL(`https://solar.googleapis.com/v1/${path}`);
-        
+
         // Copy query params
         const queryParams = c.req.query();
         Object.entries(queryParams).forEach(([key, value]) => {
             url.searchParams.set(key, value);
         });
-        
+
         url.searchParams.set("key", apiKey);
-        
+
         const response = await fetch(url.toString());
         const data = await response.json();
-        
+
         return c.json(data);
     } catch (err) {
         console.error("Solar API error:", err);
@@ -57,19 +57,19 @@ app.post("/api/airquality/*", async (c) => {
         if (!apiKey) {
             return c.json({ error: "API key not configured" }, 500);
         }
-        
+
         const path = c.req.path.replace("/api/airquality/", "");
         const url = new URL(`https://airquality.googleapis.com/v1/${path}`);
         url.searchParams.set("key", apiKey);
-        
+
         const body = await c.req.json();
-        
+
         const response = await fetch(url.toString(), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
         });
-        
+
         const data = await response.json();
         return c.json(data);
     } catch (err) {
@@ -84,20 +84,20 @@ app.get("/api/airquality/*", async (c) => {
         if (!apiKey) {
             return c.json({ error: "API key not configured" }, 500);
         }
-        
+
         const path = c.req.path.replace("/api/airquality/", "");
         const url = new URL(`https://airquality.googleapis.com/v1/${path}`);
-        
+
         const queryParams = c.req.query();
         Object.entries(queryParams).forEach(([key, value]) => {
             url.searchParams.set(key, value);
         });
-        
+
         url.searchParams.set("key", apiKey);
-        
+
         const response = await fetch(url.toString());
         const data = await response.json();
-        
+
         return c.json(data);
     } catch (err) {
         console.error("Air Quality API error:", err);
@@ -112,20 +112,20 @@ app.get("/api/pollen/*", async (c) => {
         if (!apiKey) {
             return c.json({ error: "API key not configured" }, 500);
         }
-        
+
         const path = c.req.path.replace("/api/pollen/", "");
         const url = new URL(`https://pollen.googleapis.com/v1/${path}`);
-        
+
         const queryParams = c.req.query();
         Object.entries(queryParams).forEach(([key, value]) => {
             url.searchParams.set(key, value);
         });
-        
+
         url.searchParams.set("key", apiKey);
-        
+
         const response = await fetch(url.toString());
         const data = await response.json();
-        
+
         return c.json(data);
     } catch (err) {
         console.error("Pollen API error:", err);
@@ -138,13 +138,13 @@ app.post("/api/aiai/report", async (c) => {
     try {
         const apiKey = Deno.env.get("GEMINI_API_KEY");
         if (!apiKey) {
-            return c.json({ 
+            return c.json({
                 suggestion: "## AI Report Generation Unavailable\n\nTo enable AI-powered design intelligence, please configure a Gemini API key in your environment variables.\n\n### Manual Analysis Guidelines\n\nBased on the environmental data available:\n\n1. **Solar Potential**: Review the solar panel capacity and sunshine hours to determine optimal renewable energy strategies\n2. **Air Quality**: Consider enhanced ventilation or filtration systems if AQI indicates moderate to poor air quality\n3. **Pollen Levels**: Design landscape and HVAC systems to minimize allergen exposure for occupants\n\n### Recommended Next Steps\n\n- Configure Gemini API key for automated analysis\n- Review site data across all environmental factors\n- Develop integrated design responses addressing each environmental condition"
             });
         }
-        
+
         const { location, coordinates, solar, airQuality, pollen } = await c.req.json();
-        
+
         const prompt = `As an expert environmental architect and sustainability consultant, analyze the following site data and provide a comprehensive design intelligence report.
 
 ## SITE INFORMATION
@@ -226,7 +226,7 @@ List the top 5 immediate design actions ranked by impact and feasibility.
 Format the response in clean Markdown with clear hierarchy and actionable insights. Be specific and quantitative where possible.`;
 
         const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent?key=${apiKey}`,
             {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -241,21 +241,21 @@ Format the response in clean Markdown with clear hierarchy and actionable insigh
         );
 
         const data = await response.json();
-        
+
         if (data.error) {
             console.error("Gemini API error:", data.error);
-            return c.json({ 
+            return c.json({
                 suggestion: "## Error Generating Report\n\nThe AI service encountered an error. Please try again later.\n\n### Key Design Considerations\n\n1. **Maximize solar potential** through optimal orientation and PV integration\n2. **Address air quality** with appropriate ventilation and filtration\n3. **Design for occupant wellness** considering environmental factors\n4. **Implement sustainable strategies** appropriate for the site conditions"
             });
         }
-        
-        const suggestion = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+
+        const suggestion = data.candidates?.[0]?.content?.parts?.[0]?.text ||
             "No recommendations available at this time.";
 
         return c.json({ suggestion });
     } catch (err) {
         console.error("Report generation error:", err);
-        return c.json({ 
+        return c.json({
             suggestion: "## Report Generation Error\n\nWe encountered an issue generating your report. Please check your API configuration and try again.\n\n### General Design Guidelines\n\n- **Solar**: Orient building to maximize south-facing exposure (north in southern hemisphere)\n- **Air Quality**: Consider enhanced HVAC filtration and operable windows for ventilation\n- **Wellness**: Integrate natural elements and ensure good indoor air quality\n- **Sustainability**: Pursue renewable energy integration and efficient building envelope"
         });
     }
@@ -264,7 +264,7 @@ Format the response in clean Markdown with clear hierarchy and actionable insigh
 // Config Endpoint
 app.get("/api/config", (c) => {
     const apiKey = Deno.env.get("GOOGLE_MAPS_API_KEY");
-    return c.json({ 
+    return c.json({
         googleMapsApiKey: apiKey || "",
         hasApiKey: !!apiKey
     });
@@ -272,7 +272,7 @@ app.get("/api/config", (c) => {
 
 // Health check
 app.get("/api/health", (c) => {
-    return c.json({ 
+    return c.json({
         status: "ok",
         version: "1.0.0",
         timestamp: new Date().toISOString()

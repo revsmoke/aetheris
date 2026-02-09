@@ -11,7 +11,7 @@
     --bg-tertiary: #2d3444;
     --bg-glass: rgba(26, 31, 46, 0.75);
     --bg-glass-light: rgba(255, 255, 255, 0.05);
-    
+
     /* Accents */
     --accent-solar: #f5a623;
     --accent-solar-glow: rgba(245, 166, 35, 0.3);
@@ -21,45 +21,45 @@
     --accent-success: #4ade80;
     --accent-warning: #fbbf24;
     --accent-danger: #f87171;
-    
+
     /* Text */
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-tertiary: rgba(255, 255, 255, 0.5);
     --text-muted: rgba(255, 255, 255, 0.35);
-    
+
     /* Typography */
     --font-display: 'Crimson Pro', Georgia, serif;
     --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-    
+
     /* Spacing */
     --space-xs: 0.25rem;
     --space-sm: 0.5rem;
     --space-md: 1rem;
     --space-lg: 1.5rem;
     --space-xl: 2rem;
-    --header-height: 70px;
-    --dock-width: 380px;
+    --header-height: 64px;
+    --sidebar-width: 380px;
     --bottom-bar-height: 80px;
-    
+
     /* Border Radius */
     --radius-sm: 6px;
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
-    
+
     /* Shadows */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
     --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.3);
     --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.4);
     --shadow-panel: 0 0 60px rgba(0, 0, 0, 0.5);
-    
+
     /* Transitions */
     --transition-fast: 150ms ease;
     --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
-    
+
     /* Z-Index Scale */
     --z-canvas: 1;
     --z-vignette: 5;
@@ -74,7 +74,9 @@
 }
 
 /* Reset & Base */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -95,7 +97,10 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
     font-family: var(--font-display);
     font-weight: 600;
     line-height: 1.2;
@@ -117,7 +122,7 @@ h1, h2, h3, h4 {
 .loading-bg-gradient {
     position: absolute;
     inset: 0;
-    background: 
+    background:
         radial-gradient(ellipse 80% 50% at 50% -20%, rgba(245, 166, 35, 0.15), transparent),
         radial-gradient(ellipse 60% 40% at 80% 100%, rgba(79, 195, 247, 0.1), transparent);
     pointer-events: none;
@@ -138,8 +143,15 @@ h1, h2, h3, h4 {
 }
 
 @keyframes pulse-glow {
-    0%, 100% { filter: drop-shadow(0 0 20px var(--accent-solar-glow)); }
-    50% { filter: drop-shadow(0 0 40px var(--accent-solar-glow)); }
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 20px var(--accent-solar-glow));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 40px var(--accent-solar-glow));
+    }
 }
 
 .loading-title {
@@ -177,9 +189,20 @@ h1, h2, h3, h4 {
 }
 
 @keyframes loading-progress {
-    0% { width: 0%; transform: translateX(-100%); }
-    50% { width: 100%; transform: translateX(0); }
-    100% { width: 100%; transform: translateX(100%); }
+    0% {
+        width: 0%;
+        transform: translateX(-100%);
+    }
+
+    50% {
+        width: 100%;
+        transform: translateX(0);
+    }
+
+    100% {
+        width: 100%;
+        transform: translateX(100%);
+    }
 }
 
 .loading-status {
@@ -193,6 +216,8 @@ h1, h2, h3, h4 {
 #app {
     position: fixed;
     inset: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 #app.hidden {
@@ -201,69 +226,66 @@ h1, h2, h3, h4 {
 }
 
 #view3d {
-    position: fixed;
-    inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: var(--z-canvas);
-    width: 100vw;
-    height: 100vh;
+    background: var(--bg-primary);
+}
+
+/* ============================================
+   LAYOUT CONTAINERS
+   ============================================ */
+#main-container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+#sidebar {
+    width: var(--sidebar-width);
+    height: 100%;
+    background: var(--bg-glass);
+    backdrop-filter: blur(24px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: var(--space-xs);
+    padding: var(--space-xs);
+    z-index: var(--z-dock);
+    transition: width var(--transition-base);
+}
+
+#content-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Vignette - subtle, keeps center clear */
 .vignette-overlay {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: var(--z-vignette);
     pointer-events: none;
-    background: 
-        /* Very subtle corner darkening for panels */
-        radial-gradient(ellipse 300px 250px at 0% 0%, transparent 50%, rgba(0, 0, 0, 0.15) 100%),
-        radial-gradient(ellipse 300px 250px at 100% 0%, transparent 50%, rgba(0, 0, 0, 0.15) 100%),
-        radial-gradient(ellipse 300px 150px at 0% 100%, transparent 40%, rgba(0, 0, 0, 0.2) 100%),
-        radial-gradient(ellipse 300px 150px at 100% 100%, transparent 40%, rgba(0, 0, 0, 0.2) 100%),
-        /* Center stays very clear - minimal vignette */
+    background:
         radial-gradient(ellipse 70% 70% at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.1) 100%);
-}
-
-/* ============================================
-   UI CONTAINER - NO OVERLAPS
-   ============================================ */
-#ui-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: var(--z-ui);
-    pointer-events: none;
-    display: grid;
-    grid-template-rows: var(--header-height) 1fr var(--bottom-bar-height);
-    grid-template-columns: var(--dock-width) 1fr var(--dock-width);
-    grid-template-areas:
-        "header header header"
-        "left-panel center right-panel"
-        "bottom-left center-bottom bottom-right";
-    gap: 0;
-    padding: var(--space-md);
-}
-
-/* Everything in UI can receive pointer events */
-#ui-overlay > * {
-    pointer-events: auto;
 }
 
 /* ============================================
    HEADER - TOP CENTER
    ============================================ */
 .app-header {
-    grid-area: header;
-    place-self: start center;
+    height: var(--header-height);
     display: flex;
     align-items: center;
-    gap: var(--space-xl);
-    padding: var(--space-sm) var(--space-lg);
+    justify-content: space-between;
+    padding: 0 var(--space-lg);
     background: var(--bg-glass);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-md);
-    margin-top: var(--space-sm);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: var(--z-header);
 }
 
 .brand {
@@ -335,61 +357,29 @@ h1, h2, h3, h4 {
    DOCK PANELS - SIDES ONLY, NO OVERLAP
    ============================================ */
 .dock-panel {
-    position: relative;
-    background: var(--bg-glass);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-panel);
-    overflow: hidden;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
     transition: all var(--transition-base);
     display: flex;
     flex-direction: column;
 }
 
-/* Collapsed state - icon only */
+/* Collapsed state */
 .dock-panel.collapsed {
-    max-height: 48px;
-    min-height: 48px;
-    overflow: hidden;
-    flex-shrink: 0;
+    max-height: 42px;
+    min-height: 42px;
 }
 
 .dock-panel.collapsed .panel-content {
-    opacity: 0;
-    pointer-events: none;
+    display: none;
 }
 
-/* Panel positioning - LEFT SIDE */
-#site-panel {
-    grid-area: left-panel;
-    place-self: start start;
-    width: 100%;
-    max-height: calc(100vh - var(--header-height) - var(--space-lg) * 3);
-}
-
-#time-panel {
-    grid-area: bottom-left;
-    place-self: end start;
-    width: 100%;
-    max-height: 280px;
-}
-
-/* Panel positioning - RIGHT SIDE (stacked) */
-#metrics-panel {
-    grid-area: right-panel;
-    place-self: start end;
-    width: 100%;
-    max-height: calc((100vh - var(--header-height) - var(--bottom-bar-height) - var(--space-lg) * 4) / 2);
-    margin-bottom: var(--space-sm);
-}
-
+#site-panel,
+#metrics-panel,
+#time-panel,
 #design-panel {
-    grid-area: bottom-right;
-    place-self: end end;
     width: 100%;
-    max-height: calc((100vh - var(--header-height) - var(--bottom-bar-height) - var(--space-lg) * 4) / 2);
 }
 
 /* Panel header */
@@ -1113,8 +1103,10 @@ h1, h2, h3, h4 {
    ACTION BAR - BOTTOM CENTER
    ============================================ */
 .action-bar {
-    grid-area: center-bottom;
-    place-self: end center;
+    position: absolute;
+    bottom: var(--space-xl);
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
     gap: var(--space-md);
@@ -1124,7 +1116,7 @@ h1, h2, h3, h4 {
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-lg);
-    margin-bottom: var(--space-sm);
+    z-index: var(--z-ui);
 }
 
 .primary-btn {
@@ -1155,8 +1147,15 @@ h1, h2, h3, h4 {
 }
 
 @keyframes btn-pulse {
-    0%, 100% { box-shadow: 0 4px 24px rgba(245, 166, 35, 0.3); }
-    50% { box-shadow: 0 4px 32px rgba(245, 166, 35, 0.5); }
+
+    0%,
+    100% {
+        box-shadow: 0 4px 24px rgba(245, 166, 35, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 4px 32px rgba(245, 166, 35, 0.5);
+    }
 }
 
 .secondary-btn {
@@ -1339,7 +1338,9 @@ h1, h2, h3, h4 {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .report-loading p {
@@ -1388,7 +1389,8 @@ h1, h2, h3, h4 {
     font-size: 0.875rem;
 }
 
-.report-content ul, .report-content ol {
+.report-content ul,
+.report-content ol {
     margin-bottom: var(--space-sm);
     padding-left: var(--space-lg);
 }
@@ -1433,12 +1435,22 @@ h1, h2, h3, h4 {
 }
 
 @keyframes toast-in {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes toast-out {
-    to { opacity: 0; transform: translateY(-20px); }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 }
 
 .toast.success {
@@ -1454,7 +1466,7 @@ h1, h2, h3, h4 {
 /* ============================================
    PRESENTATION MODE - UI HIDDEN
    ============================================ */
-.presentation-mode #ui-overlay > *:not(.toast-container) {
+.presentation-mode #ui-overlay>*:not(.toast-container) {
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-slow);
@@ -1487,8 +1499,16 @@ h1, h2, h3, h4 {
 }
 
 @keyframes fade-in-out {
-    0%, 100% { opacity: 0; }
-    20%, 80% { opacity: 1; }
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    20%,
+    80% {
+        opacity: 1;
+    }
 }
 
 /* ============================================
@@ -1496,53 +1516,36 @@ h1, h2, h3, h4 {
    ============================================ */
 @media (max-width: 1200px) {
     :root {
-        --dock-width: 320px;
+        --sidebar-width: 320px;
     }
 }
 
 @media (max-width: 900px) {
     :root {
-        --dock-width: 280px;
+        --sidebar-width: 280px;
     }
-    
-    .app-nav {
+
+    .app-nav span {
         display: none;
     }
-    
+
     .brand-text span {
         display: none;
     }
 }
 
 @media (max-width: 700px) {
-    #ui-overlay {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "header"
-            "center"
-            "center-bottom";
-    }
-    
-    .dock-panel {
+    #sidebar {
         position: fixed;
-        bottom: calc(var(--bottom-bar-height) + var(--space-md));
-        left: var(--space-md);
-        right: var(--space-md);
-        max-height: 50vh;
-        z-index: var(--z-panel);
+        left: 0;
+        top: var(--header-height);
+        bottom: 0;
+        width: 100%;
+        transform: translateX(-100%);
     }
-    
-    #site-panel,
-    #metrics-panel,
-    #time-panel,
-    #design-panel {
-        grid-area: auto;
-        place-self: auto;
-        display: none;
-    }
-    
-    .dock-panel.active {
-        display: flex;
+
+    #sidebar.active {
+        transform: translateX(0);
     }
 }
 
