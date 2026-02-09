@@ -260,7 +260,25 @@ h4 {
 #content-area {
     flex: 1;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+}
+
+#content-area::-webkit-scrollbar {
+    width: 6px;
+}
+
+#content-area::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#content-area::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    transition: background 0.2s ease;
+}
+
+#content-area:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Vignette - subtle, keeps center clear */
