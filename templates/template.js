@@ -29,6 +29,39 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.toggle('active');
         });
     });
+
+    // 4. Custom Select Toggling
+    const selectTrigger = document.querySelector('.select-trigger');
+    const selectOptions = document.querySelector('.select-options');
+    if (selectTrigger) {
+        selectTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectOptions.classList.toggle('active');
+        });
+
+        const options = document.querySelectorAll('.select-option');
+        options.forEach(opt => {
+            opt.addEventListener('click', () => {
+                selectTrigger.innerText = opt.innerText;
+                selectOptions.classList.remove('active');
+            });
+        });
+    }
+
+    // Close select on outside click
+    document.addEventListener('click', () => {
+        if (selectOptions) selectOptions.classList.remove('active');
+    });
+
+    // 5. Segmented Control Switching
+    const segmentedButtons = document.querySelectorAll('.segmented-control button');
+    segmentedButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const group = btn.parentElement;
+            group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
 });
 
 /**

@@ -135,6 +135,92 @@
                         </div>
                     </div>
 
+                    <!-- Advanced Controls Showcase -->
+                    <div
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem; background: var(--bg-glass-light); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div>
+                            <h3 style="margin-bottom: 1.5rem;">Form Elements</h3>
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div>
+                                    <label class="field-label">Interactive Toggle</label>
+                                    <label class="switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="field-label">Segmented Control</label>
+                                    <div class="segmented-control">
+                                        <button class="active">2D View</button>
+                                        <button>3D Scene</button>
+                                        <button>Split</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="field-label">Custom Selection</label>
+                                    <div class="select-wrapper">
+                                        <div class="select-trigger">Select Priority...</div>
+                                        <div class="select-options">
+                                            <div class="select-option">Critical Intelligence</div>
+                                            <div class="select-option">Standard Monitoring</div>
+                                            <div class="select-option">Archival Data</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 style="margin-bottom: 1.5rem;">System Feedback</h3>
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div>
+                                    <label class="field-label">Process Completion</label>
+                                    <div class="progress-container">
+                                        <div class="progress-label">
+                                            <span style="font-size: 0.7rem; color: var(--text-tertiary);">Data
+                                                Synthesis</span>
+                                            <span style="font-size: 0.7rem; color: var(--text-primary);">75%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 75%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 2rem;">
+                                    <div>
+                                        <label class="field-label">Checkboxes</label>
+                                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                            <label class="custom-check">
+                                                <input type="checkbox" checked>
+                                                <span class="checkmark"></span>
+                                                <span style="font-size: 0.8rem;">Auto-Sync</span>
+                                            </label>
+                                            <label class="custom-check">
+                                                <input type="checkbox">
+                                                <span class="checkmark"></span>
+                                                <span style="font-size: 0.8rem;">Vignette</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="field-label">Radio Selection</label>
+                                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                            <label class="custom-check radio">
+                                                <input type="radio" name="mode" checked>
+                                                <span class="checkmark"></span>
+                                                <span style="font-size: 0.8rem;">Fast</span>
+                                            </label>
+                                            <label class="custom-check radio">
+                                                <input type="radio" name="mode">
+                                                <span class="checkmark"></span>
+                                                <span style="font-size: 0.8rem;">Quality</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="display: flex; gap: 1rem;">
                         <button class="primary-btn" onclick="showToast('Action performed successfully!')">Primary
                             Action</button>

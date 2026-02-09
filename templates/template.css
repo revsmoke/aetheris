@@ -1078,6 +1078,7 @@ h4 {
     height: 4px;
     background: var(--bg-tertiary);
     border-radius: 2px;
+    appearance: none;
     -webkit-appearance: none;
     margin-bottom: 2px;
 }
@@ -1565,4 +1566,261 @@ h4 {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
+}
+
+/* ============================================
+   ADDITIONAL COMPONENTS
+   ============================================ */
+
+/* Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: var(--bg-tertiary);
+    transition: var(--transition-base);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--text-tertiary);
+    transition: var(--transition-base);
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: var(--accent-solar-glow);
+    border-color: var(--accent-solar);
+}
+
+input:checked+.slider:before {
+    transform: translateX(16px);
+    background-color: var(--accent-solar);
+}
+
+/* Segmented Control */
+.segmented-control {
+    display: flex;
+    background: var(--bg-glass-light);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    padding: 2px;
+    gap: 2px;
+}
+
+.segmented-control button {
+    flex: 1;
+    padding: 6px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.segmented-control button:hover {
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.segmented-control button.active {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Custom Select Dropdown */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-trigger {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-glass-light);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all var(--transition-fast);
+}
+
+.select-trigger:after {
+    content: '▾';
+    font-size: 0.6rem;
+    color: var(--text-muted);
+}
+
+.select-trigger:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.select-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    z-index: 100;
+    box-shadow: var(--shadow-md);
+    display: none;
+}
+
+.select-options.active {
+    display: block;
+    animation: fade-in-up 0.2s ease;
+}
+
+.select-option {
+    padding: 8px 12px;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.select-option:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Checkbox & Radio Styles */
+.custom-check {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-check input {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    background: var(--bg-glass-light);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    position: relative;
+    transition: all var(--transition-fast);
+}
+
+.custom-check:hover .checkmark {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.custom-check input:checked+.checkmark {
+    background: var(--accent-solar);
+    border-color: var(--accent-solar);
+}
+
+.custom-check input:checked+.checkmark:after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--bg-primary);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Radio Specific */
+.custom-check.radio .checkmark {
+    border-radius: 50%;
+}
+
+.custom-check.radio input:checked+.checkmark:after {
+    left: 5px;
+    top: 5px;
+    width: 6px;
+    height: 6px;
+    background: var(--bg-primary);
+    border-radius: 50%;
+    border: none;
+    transform: none;
+}
+
+/* Progress Bars */
+.progress-container {
+    width: 100%;
+    margin-bottom: var(--space-md);
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.progress-bar {
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-solar), var(--accent-air));
+    width: 0;
+    transition: width 1s ease;
+}
+
+/* Radial Progress (Small) */
+.radial-progress {
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+
+.radial-progress svg {
+    transform: rotate(-90deg);
+}
+
+/* Animation Utilities */
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
