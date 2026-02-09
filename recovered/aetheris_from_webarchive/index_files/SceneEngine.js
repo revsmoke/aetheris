@@ -172,12 +172,8 @@ export class SceneEngine {
             const tilesUrl = 'https://tile.googleapis.com/v1/3dtiles/root.json';
             this.tiles = new TilesRenderer(tilesUrl);
             
-            // Add API key to tile requests (but not to blob URLs for textures)
+            // Add API key to tile requests
             this.tiles.preprocessURL = (uri) => {
-                // Don't modify blob URLs (internal browser URLs for textures)
-                if (uri.startsWith('blob:')) {
-                    return uri;
-                }
                 const url = new URL(uri);
                 url.searchParams.append('key', this.apiKey);
                 return url.toString();
